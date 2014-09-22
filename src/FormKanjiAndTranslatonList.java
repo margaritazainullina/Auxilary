@@ -5,7 +5,7 @@ public class FormKanjiAndTranslatonList {
 	public static StringBuffer translation = new StringBuffer();
 
 	public static void main(String[] args) {
-		fetch("C:\\proj\\grammar_n2_.txt");
+		fetch("C:\\proj\\grammar_n1.txt");
 		try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
 				new FileOutputStream("C:\\proj\\kanji.txt"), "UTF-8"))) {
 			out.write(kanji.toString());
@@ -31,6 +31,7 @@ public class FormKanjiAndTranslatonList {
 					isFirstLine = true;
 					continue;
 				} else {
+					System.out.println(s);
 					if (!s.isEmpty()) {
 						String[] ss = s.split("\t");
 						if (isFirstLine) {

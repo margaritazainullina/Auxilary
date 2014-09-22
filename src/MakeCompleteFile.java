@@ -40,10 +40,10 @@ public class MakeCompleteFile {
 			e.printStackTrace();
 		}
 
-		fetch("C:\\proj\\grammar_n2_.txt");
+		fetch("C:\\proj\\grammar_n1.txt");
 
 		try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream("C:\\proj\\grammar_n2.txt"), "UTF-8"))) {
+				new FileOutputStream("C:\\proj\\grammar_n1_.txt"), "UTF-8"))) {
 			out.write(all.toString());
 		} catch (IOException e) {
 			e.printStackTrace();

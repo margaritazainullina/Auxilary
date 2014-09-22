@@ -7,7 +7,7 @@ public class ValidateFile {
 
 	public static void main(String[] args) {
 
-		fetch("C:\\proj\\grammar_n2.txt");
+		fetch("C:\\proj\\grammar_n1_.txt");
 
 	}
 

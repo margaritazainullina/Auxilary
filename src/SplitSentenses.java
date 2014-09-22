@@ -8,10 +8,10 @@ public class SplitSentenses {
 	public static void main(String[] args) {
 		String s = "";
 		
-		fetch("C:\\proj\\grammar_n2.txt");
+		fetch("C:\\proj\\grammar_n1_.txt");
 
 		try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream("C:\\proj\\grammar_n2.txt"), "UTF-8"))) {
+				new FileOutputStream("C:\\proj\\grammar_n1_.txt"), "UTF-8"))) {
 			out.write(all.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -24,7 +24,9 @@ public class SplitSentenses {
 				new FileInputStream(inputPath), "UTF-8"))) {
 			boolean isFirstLine = true;
 			String rule="";
-			while ((s = buffer.readLine()) != null)
+			int i=0;
+			while ((s = buffer.readLine()) != null){
+				i++;
 				if (!s.isEmpty()) {					
 					String[] ss = s.split("\t");
 					if (isFirstLine) {
@@ -33,6 +35,7 @@ public class SplitSentenses {
 						all.append("\r\n");
 						isFirstLine = false;
 					} else {
+						System.out.println(s);						
 						String[] sss = s.split(rule);
 						if(sss.length==1)
 						{
@@ -46,7 +49,7 @@ public class SplitSentenses {
 				} else {
 					all.append("\r\n");
 					isFirstLine = true;
-				}
+				}}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
