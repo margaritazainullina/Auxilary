@@ -6,13 +6,24 @@ import java.util.ArrayList;
 public class Part1 {
 	public static ArrayList<String> answers = new ArrayList<String>();
 	public static StringBuffer all = new StringBuffer();
+	public static int k = 0;
 
 	public static void main(String[] args) {
 		fetchAnswers("C:\\proj\\n5_answers.txt");
+		all.append("<test level=\"5\" name=\"n5\">" + "\r\n"
+				+ "<section name=\"文字・語彙\">");
+
 		type1("C:\\proj\\n5_1.txt");
 		type2("C:\\proj\\n5_1.2.txt");
 		type3("C:\\proj\\n5_1.3.txt");
 		type4("C:\\proj\\n5_2.txt");
+		all.append("</section>" + "\r\n");
+
+		all.append("<section name=\"聴解\">");
+		audio("C:\\proj\\n5_audio.txt");
+		all.append("</section>" + "\r\n");
+		all.append("</test>" + "\r\n");
+		System.out.println(all);
 	}
 
 	public static void fetchAnswers(String path) {
@@ -54,12 +65,9 @@ public class Part1 {
 	public static void type1(String path) {
 		String s = "";
 		// 1 part
-		all.append("<test level=\"5\" name=\"n5\">" + "\r\n"
-				+ "<section name=\"文字・語彙\">");
 
 		boolean isFirstLine = true;
 		String title = "";
-		int k = 0;
 		int t = 0;
 		try (BufferedReader buffer = new BufferedReader(new InputStreamReader(
 				new FileInputStream(path), "UTF-8"))) {
@@ -100,7 +108,7 @@ public class Part1 {
 	public static void type2(String path) {
 		// 2 part
 		String s = "";
-		int k = 0, t = 0;
+		int t = 0;
 		boolean isFirstLine = true;
 		boolean isSecondLine = false;
 		boolean x = false;
@@ -163,7 +171,7 @@ public class Part1 {
 		int t = 0;
 		String s = "";
 		boolean isFirstLine = true;
-		int k = 0, a = 0;
+		int  a = 0;
 		boolean x = false;
 		try (BufferedReader buffer = new BufferedReader(new InputStreamReader(
 				new FileInputStream("C:\\proj\\n5_1.3.txt"), "UTF-8"))) {
@@ -208,19 +216,70 @@ public class Part1 {
 		// 4 part
 		int t = 0;
 		String s = "";
-		boolean isFirstLine = true;
-		int k = 0, a = 0;
+		String mondai = "";
+		boolean isMondai = true;
+		int a = 0;
 		boolean x = false;
+		String w[];
 		try (BufferedReader buffer = new BufferedReader(new InputStreamReader(
 				new FileInputStream(path), "UTF-8"))) {
 			while ((s = buffer.readLine()) != null) {
+				if (s.startsWith("問題")) {
+					all.append("<task caption=\"" + s + "\">" + "\r\n");
+					// all.append("<question weight=\"1\" title=\"");
+					isMondai = true;
+				} else if (s.startsWith("問")) {
+					a = 0;
+					isMondai = false;
+					all.append("<question weight=\"1\" title=\"");
+					all.append(mondai + "\" text=\"" + s + "\">\r\n");
+				} else if ((w = s.split("\\(\\d\\)")).length > 1) {
+					isMondai = true;
+					mondai += s + "\r\n";
+				} else if (isMondai) {
+					mondai += s + "\r\n";
+				} else if (s.isEmpty())
+					all.append("</task>" + "\r\n");
+				else {
+					String sss[] = answers.get(k).split("\t");
+					k++;
+					a++;
+					all.append(sss[0] + s + sss[1] + "\r\n");
+					if (a == 4)
+						all.append("</question>" + "\r\n");
+				}
 
+			}
+			all.append("</task>" + "\r\n");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	public static void audio(String path) {
+		String s = "";
+		all.append("<task caption=\"\">"+ "\r\n");
+		try (BufferedReader buffer = new BufferedReader(new InputStreamReader(
+				new FileInputStream(path), "UTF-8"))) {
+			while ((s = buffer.readLine()) != null) {
+				String[] ss = s.split("\\t");
+				String audio = ss[0];
+				String img = "";
+				if (ss.length > 1)
+					img = ss[1];
+				all.append("<question weight=\"1\" title=\"\" text=\"\" imgRef=\""+img+"\""+" audioRef=\""+audio+"\">"+ "\r\n");
+				for (int i = 0; i < 4; i++) {
+					String sss[] = answers.get(k).split("\t");
+					k++;
+					all.append(sss[0] + (i+1) + sss[1] + "\r\n");					
+				}
+				all.append("</question>"+ "\r\n");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		all.append("</section>" + "\r\n");
-		all.append("</test>" + "\r\n");
-		System.out.println(all);
+		all.append("</task>"+ "\r\n");
 	}
 }
